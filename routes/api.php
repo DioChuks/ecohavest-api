@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\EmailVerificationController;
 use App\Http\Controllers\NewsletterController;
+use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -31,6 +32,8 @@ Route::group(['middleware' => ['auth:sanctum']], function(){
     
     // reset user password
     Route::post('/user/password-reset', [AuthController::class, 'changeGeneratedForgotPassword']);
+
+    Route::put('/user/{id}', [UserController::class, 'update']);
 
     // to log the user out
     Route::post('/logout', [AuthController::class, 'logout']);
