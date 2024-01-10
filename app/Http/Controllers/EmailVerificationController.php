@@ -26,16 +26,16 @@ class EmailVerificationController extends Controller
 
         // Check if the user has already been verified
         if(!$checkUserOtp){
-            return $this->error(null, 422, 'OTP is invalid');
+            return $this->error(null, 'OTP is invalid');
         }
 
         if ($checkUserOtp->email_verified_at === null) {
             $checkUserOtp->email_verified_at = now();
             $checkUserOtp->save();
             $checkUserOtp->notify(new SignUpDoneNotification($checkUserOtp));
-            return $this->success(null, 201, 'verification confirmed');
+            return $this->success(null, 'verification confirmed', 201);
         } else {
-            return $this->error(null, 422, 'Email already verified');
+            return $this->error(null, 'Email already verified');
         }
 
     }
@@ -46,7 +46,7 @@ class EmailVerificationController extends Controller
         $user = $request->user();
     
         if ($user->hasVerifiedEmail()) {
-            return $this->error(null, 422, 'Email already verified');
+            return $this->error(null, 'Email already verified');
         }
         
         $user->notify(new VerifyEmailNotification($user));
